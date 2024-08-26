@@ -2,7 +2,6 @@ import database from "infra/database";
 import { NotFoundError, ValidationError } from "infra/errors";
 import password from "./password";
 
-
 async function findOneById(userId) {
   const userFound = await runSelectQuery(userId);
   return userFound;

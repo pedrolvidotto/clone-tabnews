@@ -17,4 +17,3 @@ async function getHandler(request, response) {
   const userFound = await user.findOneById(sessionObject.user_id);
   return response.status(200).json(userFound);
 }
-

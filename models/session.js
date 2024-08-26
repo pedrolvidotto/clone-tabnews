@@ -3,7 +3,6 @@ import crypto from "crypto";
 
 const EXPIRATION_IN_MILLISECONDS = 1000 * 60 * 60 * 24 * 30; // 30 days
 
-
 async function findOneValidByToken(sessionToken) {
   const sessionFound = await runSelectQuery(sessionToken);
   return sessionFound;
