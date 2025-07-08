@@ -1,5 +1,7 @@
 import { version as uuidVersion } from "uuid";
 import orchestrator from "../../../orchestrator";
+import user from "models/user";
+import password from "models/password";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -29,7 +31,7 @@ describe("POST /api/v1/users", () => {
         id: responseBody.id,
         username: "pedro",
         email: "pedro@pedro.com",
-        password: "123456",
+        password: responseBody.password,
         createdAt: responseBody.createdAt,
         updatedAt: responseBody.updatedAt,
       });
@@ -37,6 +39,19 @@ describe("POST /api/v1/users", () => {
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.createdAt)).not.toBeNaN();
       expect(Date.parse(responseBody.updatedAt)).not.toBeNaN();
+
+      const userInDatabase = await user.findOneByUsername("pedro");
+      const correctPasswordMatch = await password.compare(
+        "123456",
+        userInDatabase.password,
+      );
+
+      const incorrectPasswordMatch = await password.compare(
+        "senhaerrada",
+        userInDatabase.password,
+      );
+      expect(correctPasswordMatch).toBe(true);
+      expect(incorrectPasswordMatch).toBe(false);
     });
 
     test("With duplicated email", async () => {
@@ -72,7 +87,7 @@ describe("POST /api/v1/users", () => {
       expect(response2Body).toEqual({
         name: "ValidationError",
         message: "O email informado já está sendo utilizado",
-        action: "Utilize outro email para realizar o cadastro",
+        action: "Utilize outro email para realizar esta operação",
         status_code: 400,
       });
     });
@@ -110,7 +125,7 @@ describe("POST /api/v1/users", () => {
       expect(response2Body).toEqual({
         name: "ValidationError",
         message: "O nome do usuário informado já está sendo utilizado",
-        action: "Utilize outro node de usuário para realizar o cadastro",
+        action: "Utilize outro username para realizar esta operação",
         status_code: 400,
       });
     });
