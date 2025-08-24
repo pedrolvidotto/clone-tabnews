@@ -121,14 +121,14 @@ describe("PATCH /api/v1/users/[username]", () => {
         username: "uniqueUser2",
         email: createdUser1.email,
         password: responseBody.password,
-        createdAt: responseBody.createdAt,
-        updatedAt: responseBody.updatedAt,
+        created_at: responseBody.created_at,
+        updated_at: responseBody.updated_at,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
-      expect(Date.parse(responseBody.createdAt)).not.toBeNaN();
-      expect(Date.parse(responseBody.updatedAt)).not.toBeNaN();
-      expect(responseBody.updatedAt > responseBody.createdAt).toBe(true);
+      expect(Date.parse(responseBody.created_at)).not.toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
     test("With unique 'email'", async () => {
@@ -158,14 +158,14 @@ describe("PATCH /api/v1/users/[username]", () => {
         username: createdUser1.username,
         email: "uniqueEmail2@gmail.com",
         password: responseBody.password,
-        createdAt: responseBody.createdAt,
-        updatedAt: responseBody.updatedAt,
+        created_at: responseBody.created_at,
+        updated_at: responseBody.updated_at,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
-      expect(Date.parse(responseBody.createdAt)).not.toBeNaN();
-      expect(Date.parse(responseBody.updatedAt)).not.toBeNaN();
-      expect(responseBody.updatedAt > responseBody.createdAt).toBe(true);
+      expect(Date.parse(responseBody.created_at)).not.toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
     test("With new 'password'", async () => {
@@ -195,14 +195,14 @@ describe("PATCH /api/v1/users/[username]", () => {
         username: createdUser1.username,
         email: createdUser1.email,
         password: responseBody.password,
-        createdAt: responseBody.createdAt,
-        updatedAt: responseBody.updatedAt,
+        created_at: responseBody.created_at,
+        updated_at: responseBody.updated_at,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
-      expect(Date.parse(responseBody.createdAt)).not.toBeNaN();
-      expect(Date.parse(responseBody.updatedAt)).not.toBeNaN();
-      expect(responseBody.updatedAt > responseBody.createdAt).toBe(true);
+      expect(Date.parse(responseBody.created_at)).not.toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
       const userInDatabase = await user.findOneByUsername(
         createdUser1.username,
