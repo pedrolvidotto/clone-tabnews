@@ -16,7 +16,7 @@ describe("GET /api/v1/users", () => {
 
       const sessionObject = await orchestrator.createSession(createdUser.id);
 
-      const response = await fetch("http://localhost:3000/api/v1/users", {
+      const response = await fetch("http://localhost:3000/api/v1/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -32,8 +32,8 @@ describe("GET /api/v1/users", () => {
         username: "UserWithValidSession",
         email: createdUser.email,
         password: responseBody.password,
-        created_at: responseBody.created_at.toISOString(),
-        updated_at: responseBody.updated_at.toISOString(),
+        created_at: responseBody.created_at,
+        updated_at: responseBody.updated_at,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
