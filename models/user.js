@@ -191,5 +191,5 @@ async function hashPasswordInObject(userInputValues) {
   userInputValues.password = hashedPassword;
 }
 
-const user = { create,findOneById, findOneByUsername, update, findOneByEmail };
+const user = { create, findOneById, findOneByUsername, update, findOneByEmail };
 export default user;
