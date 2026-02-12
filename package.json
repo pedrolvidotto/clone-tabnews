@@ -21,6 +21,9 @@
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "next lint  --dir .",
+    "lint:eslint:fix": "next lint  --dir  --fix",
+    "prebuild": "pnpm lint:prettier:check && pnpm lint:eslint:check",
+    "prebuild:fix": "pnpm lint:prettier:fix && pnpm lint:eslint:fix",
     "prepare": "husky",
     "commit": "cz"
   },
