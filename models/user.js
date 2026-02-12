@@ -2,6 +2,29 @@ import database from "infra/database";
 import { NotFoundError, ValidationError } from "infra/errors";
 import password from "./password";
 
+async function findOneById(userId) {
+  const userFound = await runSelectQuery(userId);
+  return userFound;
+
+  async function runSelectQuery(id) {
+    const result = await database.query({
+      text: `SELECT * 
+              FROM users 
+              WHERE id = $1
+              LIMIT 1
+              ;`,
+      values: [id],
+    });
+    if (result.rowCount === 0) {
+      throw new NotFoundError({
+        message: "O usuário informado não foi encontrado no sistema",
+        action: "Verifique se o id está digitado corretamente",
+      });
+    }
+    return result.rows[0];
+  }
+}
+
 async function findOneByUsername(username) {
   const userFound = await runSelectQuery(username);
   return userFound;
@@ -25,6 +48,35 @@ async function findOneByUsername(username) {
       throw new NotFoundError({
         message: "O username informado não foi encontrado no sistema",
         action: "Verifique se o username está digitado corretamente",
+      });
+    }
+    return result.rows[0];
+  }
+}
+
+async function findOneByEmail(email) {
+  const userFound = await runSelectQuery(email);
+  return userFound;
+
+  async function runSelectQuery(email) {
+    const result = await database.query({
+      text: `
+            SELECT 
+              * 
+            FROM 
+              users 
+            WHERE 
+              LOWER(email) = LOWER($1)
+            LIMIT 
+              1
+            ;`,
+      values: [email],
+    });
+
+    if (result.rowCount === 0) {
+      throw new NotFoundError({
+        message: "O email informado não foi encontrado no sistema",
+        action: "Verifique se o email está digitado corretamente",
       });
     }
     return result.rows[0];
@@ -105,7 +157,7 @@ async function runUpdateQuery(userWithNewValues) {
                 username = $1, 
                 email = $2, 
                 password = $3, 
-                "updatedAt" = timezone('utc', now())
+                "updated_at" = timezone('utc', now())
             WHERE id = $4 
             RETURNING *`,
     values: [
@@ -139,5 +191,5 @@ async function hashPasswordInObject(userInputValues) {
   userInputValues.password = hashedPassword;
 }
 
-const user = { create, findOneByUsername, update };
+const user = { create, findOneById, findOneByUsername, update, findOneByEmail };
 export default user;
