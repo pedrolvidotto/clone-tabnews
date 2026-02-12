@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Repositório para estudo",
   "main": "index.js",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "trap 'exit 0' INT; npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
     "postdev": "npm run services:stop",
